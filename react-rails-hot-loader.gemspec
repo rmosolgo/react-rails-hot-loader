@@ -1,33 +1,28 @@
 # coding: utf-8
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'react/rails/hot/loader/version'
+require 'hot_loader/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "react-rails-hot-loader"
-  spec.version       = React::Rails::Hot::Loader::VERSION
+  spec.version       = React::Rails::HotLoader::VERSION
   spec.authors       = ["Robert Mosolgo"]
   spec.email         = ["rdmosolgo@gmail.com"]
 
-  spec.summary       = %q{TODO: Write a short summary, because Rubygems requires one.}
-  spec.description   = %q{TODO: Write a longer description or delete this line.}
+  spec.summary       = %q{Live-reload React.js components with Ruby on Rails}
+  spec.description   = %q{Tie into the `react-rails` gem to notify the client of changed files & reload assets on the client when they are changed.}
   spec.homepage      = "TODO: Put your gem's website or public repo URL here."
   spec.license       = "MIT"
 
-  # Prevent pushing this gem to RubyGems.org by setting 'allowed_push_host', or
-  # delete this section to allow pushing this gem to any host.
-  if spec.respond_to?(:metadata)
-    spec.metadata['allowed_push_host'] = "TODO: Set to 'http://mygemserver.com'"
-  else
-    raise "RubyGems 2.0 or newer is required to protect against public gem pushes."
-  end
-
   spec.files         = `git ls-files -z`.split("\x0").reject { |f| f.match(%r{^(test|spec|features)/}) }
-  spec.bindir        = "exe"
-  spec.executables   = spec.files.grep(%r{^exe/}) { |f| File.basename(f) }
   spec.require_paths = ["lib"]
 
+  spec.add_runtime_dependency "em-websocket"
+  spec.add_runtime_dependency "react-rails"
+  
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "minitest"
+  spec.add_development_dependency "guard"
+  spec.add_development_dependency "guard-minitest"
 end
