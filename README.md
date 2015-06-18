@@ -2,6 +2,8 @@
 
 Reload React.js components with Ruby on Rails & [`react-rails`](http://github.com/reactjs/react-rails).
 
+When you edit components, they'll be reloaded by the client & re-mounted in the page.
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -38,6 +40,8 @@ Or install it yourself as:
 
 - Restart your development server
 
+- Edit files in `/app/assets/javascripts` -- they'll be reloaded in the client and React components will be remounted.
+
 ## Doeses & Doesn'ts
 
 `react-rails-hot-loader` ...
@@ -53,7 +57,7 @@ Or install it yourself as:
 
 - Handle Passenger occasionally killing background threads :(
 - Replace pinging with file watching
-- Test Server, AssetPath
+- Test `HotLoader::Server` in some way
 - Add `rails g react-rails-hot-loader:install` to add initializer and JS
 
 ## License
