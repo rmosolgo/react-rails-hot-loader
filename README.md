@@ -22,18 +22,20 @@ Or install it yourself as:
 
 ## Usage
 
-- Add an initializer (eg, `app/config/initializers/react_rails_hot_loader.rb`):
+- Add an initializer:
 
   ```ruby
+  # app/config/initializers/react_rails_hot_loader.rb
   if Rails.env.development?
     React::Rails::HotLoader.start()
   end
   ```
 
-- Include the Javascript (eg, in `app/assets/javascripts/application.js`):
+- Include the JavaScript:
 
   ```js
-  //= require react_rails_hot_loader
+  // app/assets/javascripts/application.js
+  //= require react-rails-hot-loader
   ```
 
   (When not `Rails.env.development?`, this requires an empty file, so don't worry about leaving it in production deploys.)
