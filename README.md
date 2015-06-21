@@ -42,7 +42,7 @@ Or install it yourself as:
 
 - Restart your development server
 
-- Edit files in `/app/assets/javascripts` -- they'll be reloaded in the client and React components will be remounted.
+- Edit files in `/app/assets/javascripts` & save changes -- they'll be reloaded in the client and React components will be remounted.
 
 ## Doeses & Doesn'ts
 
