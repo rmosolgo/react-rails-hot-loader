@@ -25,32 +25,32 @@ module React
           end
         end
 
+        private
+
         def serve
           EM.run {
             React::Rails::HotLoader.log("starting WS server: ws://#{host}:#{port}")
 
             EM::WebSocket.run(host: host, port: port) do |ws|
-              ws.onopen { React::Rails::HotLoader.log("opened a connection") }
-
-              ws.onmessage { |msg|
-                begin
-                  since_time =  Time.at(msg.to_i)
-                  changes = change_set_class.new(since: since_time)
-                  if changes.any?
-                    React::Rails::HotLoader.log("received message: #{msg}")
-                    React::Rails::HotLoader.log("sent response: #{changes.to_json}")
-                    ws.send(changes.to_json)
-                  end
-                rescue StandardError => err
-                  React::Rails::HotLoader.log("message error: #{err}\n #{err.backtrace.join("\n")}")
-                end
-              }
-
-              ws.onclose { React::Rails::HotLoader.log("closed a connection") }
+              ws.onopen     { React::Rails::HotLoader.log("opened a connection") }
+              ws.onmessage  { |msg| handle_message(ws, msg) }
+              ws.onclose    { React::Rails::HotLoader.log("closed a connection") }
             end
 
             React::Rails::HotLoader.log("started WS server")
           }
+        end
+
+        def handle_message(ws, msg)
+          since_time =  Time.at(msg.to_i)
+          changes = change_set_class.new(since: since_time)
+          if changes.any?
+            React::Rails::HotLoader.log("received message: #{msg}")
+            React::Rails::HotLoader.log("sent response: #{changes.to_json}")
+            ws.send(changes.to_json)
+          end
+        rescue StandardError => err
+          React::Rails::HotLoader.log("message error: #{err}\n #{err.backtrace.join("\n")}")
         end
       end
     end

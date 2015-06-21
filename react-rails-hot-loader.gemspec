@@ -20,15 +20,16 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = '>= 2.1.0'
 
   spec.add_runtime_dependency "em-websocket"
-  spec.add_runtime_dependency "react-rails"
   spec.add_runtime_dependency "rails"
+  spec.add_runtime_dependency "react-rails"
 
   spec.add_development_dependency "bundler", "~> 1.10"
-  spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "minitest"
+  spec.add_development_dependency "codeclimate-test-reporter"
   spec.add_development_dependency "guard"
   spec.add_development_dependency "guard-bundler"
   spec.add_development_dependency "guard-minitest"
+  spec.add_development_dependency "minitest"
+  spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "sqlite3"
   spec.add_development_dependency "websocket-client-simple"
 end
