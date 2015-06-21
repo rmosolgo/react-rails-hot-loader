@@ -59,7 +59,6 @@ Or install it yourself as:
 
 - Handle Passenger occasionally killing background threads :(
 - Replace pinging with file watching
-- Test `HotLoader::Server` in some way
 - Add `rails g react-rails-hot-loader:install` to add initializer and JS
 
 ## License

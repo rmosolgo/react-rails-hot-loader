@@ -2,8 +2,9 @@ module React
   module Rails
     module HotLoader
       mattr_accessor :server
-      def self.start(*args)
-        self.server = Server.new(*args)
+      def self.start(options={})
+        server_class = options.delete(:server_class) || Server
+        self.server = server_class.new(options)
         server.restart
       end
 
@@ -14,7 +15,8 @@ module React
       end
 
       def self.log(message)
-        ::Rails.logger.info("[HotLoader] #{message}")
+        msg = "[HotLoader] #{message}"
+        ::Rails.logger.info(msg)
       end
     end
   end

@@ -15,7 +15,6 @@ module React
 
         def restart
           if @thread.blank? || @thread.stop?
-            "[HotLoader] restarting: #{@thread}, #{@thread.try(:status)}"
             @thread = Thread.new do
               begin
                 serve
@@ -28,7 +27,7 @@ module React
 
         def serve
           EM.run {
-            React::Rails::HotLoader.log("starting WS server...")
+            React::Rails::HotLoader.log("starting WS server: ws://#{host}:#{port}")
 
             EM::WebSocket.run(host: host, port: port) do |ws|
               ws.onopen { React::Rails::HotLoader.log("opened a connection") }

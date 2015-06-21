@@ -3,8 +3,7 @@ module React
     module HotLoader
       class Railtie < ::Rails::Railtie
         config.before_initialize do |app|
-          # We want to include different files in dev/prod.
-          # The production file is empty!
+          # We want to include different files in dev/prod. The production file is empty!
           asset_path = React::Rails::HotLoader::AssetPath.new(dummy: !(::Rails.env.development?))
           app.config.assets.paths << asset_path.to_s
         end
