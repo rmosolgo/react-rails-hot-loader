@@ -1,8 +1,10 @@
-# React::Rails::HotLoader
+# React::Rails::HotLoader 
 
 Reload React.js components with Ruby on Rails & [`react-rails`](http://github.com/reactjs/react-rails).
 
-When you edit components, they'll be reloaded by the client & re-mounted in the page.
+When you edit components, they'll be reloaded by the browser & re-mounted in the page.
+
+[![Gem Version](https://badge.fury.io/rb/react-rails-hot-loader.svg)](http://badge.fury.io/rb/react-rails-hot-loader) [![Build Status](https://travis-ci.org/rmosolgo/react-rails-hot-loader.svg)](https://travis-ci.org/rmosolgo/react-rails-hot-loader) [![Code Climate](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/badges/gpa.svg)](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader) [![Test Coverage](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/badges/coverage.svg)](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/coverage) 
 
 ## Installation
 
