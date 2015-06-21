@@ -13,6 +13,7 @@ module React
           @thread = nil
         end
 
+        # Restarts the server _if_ it has stopped
         def restart
           if @thread.blank? || @thread.stop?
             @thread = Thread.new do
@@ -41,6 +42,7 @@ module React
           }
         end
 
+        # Check for any changes since `msg`, respond if there are any changes
         def handle_message(ws, msg)
           since_time =  Time.at(msg.to_i)
           changes = change_set_class.new(since: since_time)
@@ -50,7 +52,7 @@ module React
             ws.send(changes.to_json)
           end
         rescue StandardError => err
-          React::Rails::HotLoader.log("message error: #{err}\n #{err.backtrace.join("\n")}")
+          React::Rails::HotLoader.error(err)
         end
       end
     end

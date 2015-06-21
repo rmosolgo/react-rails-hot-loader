@@ -13,7 +13,7 @@ module React
             begin
               React::Rails::HotLoader.restart
             rescue StandardError => err
-              React::Rails::HotLoader.log("to_prepare failed: #{err}\n#{err.backtrace.join("\n")}")
+              React::Rails::HotLoader.error(err)
             end
           end
         end

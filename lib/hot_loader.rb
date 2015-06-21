@@ -2,21 +2,29 @@ module React
   module Rails
     module HotLoader
       mattr_accessor :server
+
+      # Create a new server with `options` & start it
       def self.start(options={})
         server_class = options.delete(:server_class) || Server
         self.server = server_class.new(options)
         server.restart
       end
 
+      # Restart the server with the same options
       def self.restart
         server.restart
       rescue StandardError => err
-        log("failed to restart: #{err}")
+        React::Rails::HotLoader.error(err)
       end
 
       def self.log(message)
         msg = "[HotLoader] #{message}"
         ::Rails.logger.info(msg)
+      end
+
+      def self.error(err)
+        msg = "[HotLoader Error] #{err}\n #{err.backtrace.join("\n")}"
+        log(msg)
       end
     end
   end
