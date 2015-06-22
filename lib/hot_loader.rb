@@ -7,7 +7,7 @@ module React
       def self.start(options={})
         server_class = options.delete(:server_class) || Server
         self.server = server_class.new(options)
-        server.restart
+        restart
       end
 
       # Restart the server with the same options
@@ -20,6 +20,7 @@ module React
       def self.log(message)
         msg = "[HotLoader] #{message}"
         ::Rails.logger.info(msg)
+        ::Rails.logger.flush
       end
 
       def self.error(err)

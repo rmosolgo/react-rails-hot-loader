@@ -10,23 +10,33 @@ module React
           @host = host
           @port = port
           @change_set_class = change_set_class
-          @thread = nil
+          @server_mutex = Mutex.new
         end
 
         # Restarts the server _if_ it has stopped
         def restart
-          if @thread.blank? || @thread.stop?
-            @thread = Thread.new do
-              begin
-                serve
-              rescue StandardError => err
-                React::Rails::HotLoader.log("failed to serve: #{err}\n#{err.backtrace.join("\n")}")
-              end
-            end
+          return if running?
+          @server_mutex.synchronize do
+            return if running?
+            start
           end
         end
 
         private
+
+        def running?
+          @server_thread && @server_thread.alive?
+        end
+
+        def start
+          @server_thread = Thread.new do
+            begin
+              serve
+            rescue StandardError => err
+              React::Rails::HotLoader.error(err)
+            end
+          end
+        end
 
         def serve
           EM.run {
@@ -44,10 +54,10 @@ module React
 
         # Check for any changes since `msg`, respond if there are any changes
         def handle_message(ws, msg)
+          # React::Rails::HotLoader.log("received message: #{msg}")
           since_time =  Time.at(msg.to_i)
           changes = change_set_class.new(since: since_time)
           if changes.any?
-            React::Rails::HotLoader.log("received message: #{msg}")
             React::Rails::HotLoader.log("sent response: #{changes.to_json}")
             ws.send(changes.to_json)
           end

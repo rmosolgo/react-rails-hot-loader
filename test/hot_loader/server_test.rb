@@ -8,14 +8,16 @@ describe React::Rails::HotLoader::Server do
   end
 
   it 'sends asset paths which have changed since that time' do
-    FileUtils.touch(Rails.root.join("app/assets/javascripts/test_asset_1.js.coffee"))
+    asset_path = Rails.root.join("app/assets/javascripts/test_asset_1.js.jsx")
+    FileUtils.touch(asset_path)
     @client.send((Time.now.to_i - 60).to_s)
 
     # wait for response:
     until @client.received.length > 0; end
 
     assert_equal 1, @client.received.length
-    asset_paths = JSON.parse(@client.received.last)["changed_asset_paths"]
-    assert_equal ["/assets/test_asset_1.js"], asset_paths
+    changed_contents = JSON.parse(@client.received.last)["changed_asset_contents"]
+    expected_content = File.read(asset_path)
+    assert_equal [expected_content], changed_contents
   end
 end
