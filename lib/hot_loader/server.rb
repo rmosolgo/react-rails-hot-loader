@@ -58,7 +58,7 @@ module React
           since_time =  Time.at(msg.to_i)
           changes = change_set_class.new(since: since_time)
           if changes.any?
-            React::Rails::HotLoader.log("sent response: #{changes.to_json}")
+            React::Rails::HotLoader.log("sent changes: #{changes.changed_file_names}")
             ws.send(changes.to_json)
           end
         rescue StandardError => err

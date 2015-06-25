@@ -24,7 +24,7 @@ module React
       end
 
       def self.error(err)
-        msg = "[HotLoader Error] #{err}\n #{err.backtrace.join("\n")}"
+        msg = "#{err.class.name}: #{err}\n #{err.backtrace.join("\n")}"
         log(msg)
       end
     end
