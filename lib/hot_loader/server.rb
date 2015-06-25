@@ -10,16 +10,14 @@ module React
           @host = host
           @port = port
           @change_set_class = change_set_class
-          @server_mutex = Mutex.new
         end
 
         # Restarts the server _if_ it has stopped
         def restart
           return if running?
-          @server_mutex.synchronize do
-            return if running?
-            start
-          end
+          start
+        rescue StandardError => err
+          React::Rails::HotLoader.error(err)
         end
 
         private
