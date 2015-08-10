@@ -31,18 +31,14 @@ module React
           end
         end
 
+        # If the Rails server runs event machine already,
+        # don't run EventMachine again, instead hook in with `next_tick`
         def serve
-          EM.run {
-            React::Rails::HotLoader.log("starting WS server: ws://#{host}:#{port}")
-
-            EM::WebSocket.run(host: host, port: port) do |ws|
-              ws.onopen     { React::Rails::HotLoader.log("opened a connection") }
-              ws.onmessage  { |msg| handle_message(ws, msg) }
-              ws.onclose    { React::Rails::HotLoader.log("closed a connection") }
-            end
-
-            React::Rails::HotLoader.log("started WS server")
-          }
+          if already_has_event_machine_server?
+            EM.next_tick { run_websocket_server }
+          else
+            EM.run { run_websocket_server }
+          end
         end
 
         # Check for any changes since `msg`, respond if there are any changes
@@ -56,6 +52,22 @@ module React
           end
         rescue StandardError => err
           React::Rails::HotLoader.error(err)
+        end
+
+        def run_websocket_server
+          React::Rails::HotLoader.log("starting WS server: ws://#{host}:#{port}")
+
+          EM::WebSocket.run(host: host, port: port) do |ws|
+            ws.onopen     { React::Rails::HotLoader.log("opened a connection") }
+            ws.onmessage  { |msg| handle_message(ws, msg) }
+            ws.onclose    { React::Rails::HotLoader.log("closed a connection") }
+          end
+
+          React::Rails::HotLoader.log("started WS server")
+        end
+
+        def already_has_event_machine_server?
+          defined?(Thin)
         end
       end
     end
