@@ -14,17 +14,12 @@ module React
 
         # Restarts the server _if_ it has stopped
         def restart
-          return if running?
           start
         rescue StandardError => err
           React::Rails::HotLoader.error(err)
         end
 
         private
-
-        def running?
-          @server_thread && @server_thread.alive?
-        end
 
         def start
           @server_thread = Thread.new do
