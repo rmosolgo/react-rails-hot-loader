@@ -1,10 +1,10 @@
-# React::Rails::HotLoader 
+# React::Rails::HotLoader
 
 Reload React.js components with Ruby on Rails & [`react-rails`](http://github.com/reactjs/react-rails).
 
 When you edit components, they'll be reloaded by the browser & re-mounted in the page.
 
-[![Gem Version](https://badge.fury.io/rb/react-rails-hot-loader.svg)](http://badge.fury.io/rb/react-rails-hot-loader) [![Build Status](https://travis-ci.org/rmosolgo/react-rails-hot-loader.svg)](https://travis-ci.org/rmosolgo/react-rails-hot-loader) [![Code Climate](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/badges/gpa.svg)](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader) [![Test Coverage](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/badges/coverage.svg)](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/coverage) 
+[![Gem Version](https://badge.fury.io/rb/react-rails-hot-loader.svg)](http://badge.fury.io/rb/react-rails-hot-loader) [![Build Status](https://travis-ci.org/rmosolgo/react-rails-hot-loader.svg)](https://travis-ci.org/rmosolgo/react-rails-hot-loader) [![Code Climate](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/badges/gpa.svg)](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader) [![Test Coverage](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/badges/coverage.svg)](https://codeclimate.com/github/rmosolgo/react-rails-hot-loader/coverage)
 
 ## Installation
 
@@ -59,9 +59,9 @@ Or install it yourself as:
 
 ## TODO
 
-- Handle Passenger occasionally killing background threads :(
-- Replace pinging with file watching
+- Replace pinging with file watching?
 - Add `rails g react-rails-hot-loader:install` to add initializer and JS
+- Remove need for initializer by automatically starting in `config.after_initialize`?
 
 ## License
 
