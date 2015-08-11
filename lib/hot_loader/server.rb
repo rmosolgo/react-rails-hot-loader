@@ -21,23 +21,15 @@ module React
 
         private
 
-        def start
-          @server_thread = Thread.new do
-            begin
-              serve
-            rescue StandardError => err
-              React::Rails::HotLoader.error(err)
-            end
-          end
-        end
-
         # If the Rails server runs event machine already,
         # don't run EventMachine again, instead hook in with `next_tick`
-        def serve
+        def start
           if already_has_event_machine_server?
             EM.next_tick { run_websocket_server }
           else
-            EM.run { run_websocket_server }
+            Thread.new do
+              EM.run { run_websocket_server }
+            end
           end
         end
 
@@ -55,15 +47,22 @@ module React
         end
 
         def run_websocket_server
-          React::Rails::HotLoader.log("starting WS server: ws://#{host}:#{port}")
+          ws_url =  "ws://#{host}:#{port}"
+          React::Rails::HotLoader.log("starting WS server (#{ws_url})")
 
           EM::WebSocket.run(host: host, port: port) do |ws|
-            ws.onopen     { React::Rails::HotLoader.log("opened a connection") }
+            ws.onopen     { React::Rails::HotLoader.log("opened a connection (#{ws_url})") }
             ws.onmessage  { |msg| handle_message(ws, msg) }
-            ws.onclose    { React::Rails::HotLoader.log("closed a connection") }
+            ws.onclose    { React::Rails::HotLoader.log("closed a connection (#{ws_url})") }
           end
 
-          React::Rails::HotLoader.log("started WS server")
+          React::Rails::HotLoader.log("started WS server (#{ws_url})")
+        rescue StandardError => err
+          if err.message =~ /no acceptor/
+            React::Rails::HotLoader.log("WS server is already running (#{ws_url})")
+          else
+            React::Rails::HotLoader.error(err)
+          end
         end
 
         def already_has_event_machine_server?
