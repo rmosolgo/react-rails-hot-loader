@@ -46,12 +46,21 @@ Or install it yourself as:
 
 - Edit files in `/app/assets/javascripts` & save changes -- they'll be reloaded in the client and React components will be remounted.
 
+## Configuration
+
+If you notice that your assets are not being recompiled and hot loaded, it could be because they aren't being matched by the default asset glob used (`**/*.{js,coffee}*`).  You can modify this asset glob like so:
+
+```ruby
+# app/config/initializers/react_rails_hot_loader.rb
+React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
+```
+
 ## Doeses & Doesn'ts
 
 `react-rails-hot-loader` ...
 
 - __does__ set up a WebSocket server & client
-- __does__ reload JS assets when they change (from `/app/assets/javascripts/*.js*`)
+- __does__ reload JS assets when they change (from `/app/assets/javascripts/*.{js,coffee}*`)
 - __does__ remount components (via `ReactRailsUJS`) after reloading assets
 - __does__ preserve state & props (because `React.render` does that out of the box)
 - __doesn't__ reload Rails view files (`html`, `erb`, `slim`, etc)
