@@ -27,7 +27,7 @@ Or install it yourself as:
 - Add an initializer:
 
   ```ruby
-  # app/config/initializers/react_rails_hot_loader.rb
+  # config/initializers/react_rails_hot_loader.rb
   if Rails.env.development?
     React::Rails::HotLoader.start()
   end
@@ -51,7 +51,7 @@ Or install it yourself as:
 If you notice that your assets are not being recompiled and hot loaded, it could be because they aren't being matched by the default asset glob used (`**/*.{js,coffee}*`).  You can modify this asset glob like so:
 
 ```ruby
-# app/config/initializers/react_rails_hot_loader.rb
+# config/initializers/react_rails_hot_loader.rb
 React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
 ```
 
