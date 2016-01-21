@@ -1,3 +1,3 @@
 var testAsset1 = function () {
-  return "test asset 1";
+  return <span>test asset 1</span>;
 };

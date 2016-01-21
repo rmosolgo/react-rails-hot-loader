@@ -1,6 +1,12 @@
 require 'test_helper'
 
-TEST_ASSET_1 = "var testAsset1 = function () {\n  return \"test asset 1\";\n};"
+TEST_ASSET_1 = "var testAsset1 = function () {
+  return React.createElement(
+    \"span\",
+    null,
+    \"test asset 1\"
+  );
+};"
 
 describe React::Rails::HotLoader::AssetChangeSet do
   it 'notes files that changed' do
