@@ -29,6 +29,7 @@ Or install it yourself as:
   ```ruby
   # config/initializers/react_rails_hot_loader.rb
   if Rails.env.development?
+    # Starts a websocket server to push changes:
     React::Rails::HotLoader.start()
   end
   ```
@@ -67,9 +68,9 @@ React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
 
 ## TODO
 
-- Replace pinging with file watching?
-- Add `rails g react-rails-hot-loader:install` to add initializer and JS
 - Remove need for initializer by automatically starting in `config.after_initialize`?
+- Figure out how the "real" React hot-loader preserves state and do that
+- Log out when a push fails, or log the JS code if the push succeeds but doesn't get eval'ed
 
 ## License
 
