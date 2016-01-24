@@ -17,7 +17,7 @@ describe React::Rails::HotLoader::Server do
 
     assert_equal 1, @client.received.length
     changed_contents = JSON.parse(@client.received.last)["changed_asset_contents"]
-    expected_content = File.read(asset_path).chomp
+    expected_content = Rails.application.assets["test_asset_1.js"].to_s
     assert_equal [expected_content], changed_contents
   end
 end

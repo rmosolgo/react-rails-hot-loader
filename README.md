@@ -62,7 +62,6 @@ React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
 - __does__ set up a WebSocket server & client
 - __does__ reload JS assets when they change (from `/app/assets/javascripts/*.{js,coffee}*`)
 - __does__ remount components (via `ReactRailsUJS`) after reloading assets
-- __does__ preserve state & props (because `React.render` does that out of the box)
 - __doesn't__ reload Rails view files (`html`, `erb`, `slim`, etc)
 - __doesn't__ reload CSS (although that could be fixed)
 

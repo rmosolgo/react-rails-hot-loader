@@ -1,3 +1,4 @@
+require 'react-rails'
 require 'hot_loader'
 require 'hot_loader/asset_change_set'
 require 'hot_loader/asset_path'
