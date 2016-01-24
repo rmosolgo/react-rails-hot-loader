@@ -15,8 +15,9 @@ module React
           @changed_files = Dir.glob(asset_glob).select { |f| File.mtime(f) >= since }
           @changed_file_names = changed_files.map { |f| f.split("/").last }
           @changed_asset_contents = changed_files.map do |f|
-            logical_path = f.sub(path.to_s, "").sub(/^\//, '')
-            ::Rails.application.assets[logical_path].to_s
+            logical_path = to_logical_path(f)
+            asset = ::Rails.application.assets[logical_path]
+            asset.to_s
           end
         end
 
@@ -31,6 +32,15 @@ module React
             changed_file_names: changed_file_names,
             changed_asset_contents: changed_asset_contents,
           }
+        end
+
+        private
+
+        def to_logical_path(asset_path)
+          asset_path
+            .sub(@path, "")       # remove the basepath
+            .sub(/^\//, '')       # remove any leading /
+            .sub(/\.js.*/, '.js') # replace any file extension with `.js`
         end
       end
     end
