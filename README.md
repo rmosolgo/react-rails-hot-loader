@@ -71,6 +71,7 @@ React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
 - Remove need for initializer by automatically starting in `config.after_initialize`?
 - Figure out how the "real" React hot-loader preserves state and do that
 - Log out when a push fails, or log the JS code if the push succeeds but doesn't get eval'ed
+- Declare bankruptcy when you change git branches (lots of changes at once)
 
 ## License
 

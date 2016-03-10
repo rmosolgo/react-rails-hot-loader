@@ -2,9 +2,12 @@ module React
   module Rails
     module HotLoader
       class AssetChangeSet
-        attr_reader :since, :path, :changed_files, :changed_file_names, :changed_asset_contents
-        class_attribute :asset_glob
+        attr_reader :since, :path, :changed_files, :changed_file_names
+        class_attribute :asset_glob, :bankruptcy_count
+        # Search for changes with this glob
         self.asset_glob = "/**/*.{js,coffee}*"
+        # If this many files change at once, give up hope! (Probably checked out a new branch)
+        self.bankruptcy_count = 10
 
         # initialize with a path and time
         # to find files which changed since that time
@@ -14,11 +17,10 @@ module React
           asset_glob = File.join(path, AssetChangeSet.asset_glob)
           @changed_files = Dir.glob(asset_glob).select { |f| File.mtime(f) >= since }
           @changed_file_names = changed_files.map { |f| f.split("/").last }
-          @changed_asset_contents = changed_files.map do |f|
-            logical_path = to_logical_path(f)
-            asset = ::Rails.application.assets[logical_path]
-            asset.to_s
-          end
+        end
+
+        def bankrupt?
+          changed_files.length > self.class.bankruptcy_count
         end
 
         def any?
@@ -32,6 +34,14 @@ module React
             changed_file_names: changed_file_names,
             changed_asset_contents: changed_asset_contents,
           }
+        end
+
+        def changed_asset_contents
+          @changed_asset_contents ||= changed_files.map do |f|
+            logical_path = to_logical_path(f)
+            asset = ::Rails.application.assets[logical_path]
+            asset.to_s
+          end
         end
 
         private
