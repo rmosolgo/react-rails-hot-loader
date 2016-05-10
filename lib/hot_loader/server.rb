@@ -6,7 +6,7 @@ module React
       class Server
         attr_reader :host, :port, :change_set_class
 
-        def initialize(host:  "0.0.0.0", port: 8082, change_set_class: React::Rails::HotLoader::AssetChangeSet)
+        def initialize(host:  "0.0.0.0", port: React::Rails::HotLoader.port, change_set_class: React::Rails::HotLoader::AssetChangeSet)
           @host = host
           @port = port
           @change_set_class = change_set_class

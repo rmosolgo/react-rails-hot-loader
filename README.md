@@ -24,16 +24,6 @@ Or install it yourself as:
 
 ## Usage
 
-- Add an initializer:
-
-  ```ruby
-  # config/initializers/react_rails_hot_loader.rb
-  if Rails.env.development?
-    # Starts a websocket server to push changes:
-    React::Rails::HotLoader.start()
-  end
-  ```
-
 - Include the JavaScript:
 
   ```js
@@ -47,6 +37,8 @@ Or install it yourself as:
 
 - Edit files in `/app/assets/javascripts` & save changes -- they'll be reloaded in the client and React components will be remounted.
 
+(This gem includes an initializer to start a change notification server in development _only_.)
+
 ## Configuration
 
 If you notice that your assets are not being recompiled and hot loaded, it could be because they aren't being matched by the default asset glob used (`**/*.{js,coffee}*`).  You can modify this asset glob like so:
@@ -54,6 +46,13 @@ If you notice that your assets are not being recompiled and hot loaded, it could
 ```ruby
 # config/initializers/react_rails_hot_loader.rb
 React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
+```
+
+You can choose a port to start it on (default is `8082`):
+
+```ruby
+# config/initializers/react_rails_hot_loader.rb
+React::Rails::HotLoader.port = 8088
 ```
 
 ## Doeses & Doesn'ts
@@ -68,10 +67,8 @@ React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
 
 ## TODO
 
-- Remove need for initializer by automatically starting in `config.after_initialize`?
 - Figure out how the "real" React hot-loader preserves state and do that
 - Log out when a push fails, or log the JS code if the push succeeds but doesn't get eval'ed
-- Declare bankruptcy when you change git branches (lots of changes at once)
 
 ## License
 

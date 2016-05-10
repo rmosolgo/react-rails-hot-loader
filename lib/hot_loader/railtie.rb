@@ -8,20 +8,24 @@ module React
         end
 
         config.after_initialize do |app|
-          ActionDispatch::Reloader.to_prepare do
-            # Seems like Passenger kills threads on the main process
-            # In that case, `starting_worker_process` isn't good enough
-            # because it doesn't run :(
+          if ::Rails.env.development?
             React::Rails::HotLoader.restart
-          end
 
-          if defined?(PhusionPassenger)
-            PhusionPassenger.on_event(:starting_worker_process) do |forked|
-              if forked
-                # We're in smart spawning mode.
-                React::Rails::HotLoader.restart
-              else
-                # We're in direct spawning mode. We don't need to do anything.
+            ActionDispatch::Reloader.to_prepare do
+              # Seems like Passenger kills threads on the main process
+              # In that case, `starting_worker_process` isn't good enough
+              # because it doesn't run :(
+              React::Rails::HotLoader.restart
+            end
+
+            if defined?(PhusionPassenger)
+              PhusionPassenger.on_event(:starting_worker_process) do |forked|
+                if forked
+                  # We're in smart spawning mode.
+                  React::Rails::HotLoader.restart
+                else
+                  # We're in direct spawning mode. We don't need to do anything.
+                end
               end
             end
           end

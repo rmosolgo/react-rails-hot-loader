@@ -3,6 +3,9 @@ module React
     module HotLoader
       mattr_accessor :server
 
+      mattr_accessor :port
+      self.port = 8082
+
       # Create a new server with `options` & start it
       def self.start(options={})
         server_class = options.delete(:server_class) || Server
@@ -12,7 +15,7 @@ module React
 
       # Restart the server with the same options
       def self.restart
-        server.restart
+        server.present? ? server.restart : start
       rescue StandardError => err
         React::Rails::HotLoader.error(err)
       end
@@ -26,10 +29,6 @@ module React
       def self.error(err)
         msg = "#{err.class.name}: #{err}\n #{err.backtrace.join("\n")}"
         log(msg)
-      end
-
-      def self.port
-        self.server && self.server.port
       end
     end
   end
