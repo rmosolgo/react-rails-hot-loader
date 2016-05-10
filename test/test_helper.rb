@@ -11,8 +11,6 @@ Rails.backtrace_cleaner.remove_silencers!
 # Load support files
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
 
-
-
 def touch_asset(asset_name)
   FileUtils.touch(Rails.root.join("app/assets/javascripts/#{asset_name}"))
 end

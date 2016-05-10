@@ -6,8 +6,7 @@ TEST_ASSET_1 = %|var testAsset1 = function () {
     null,
     "test asset 1"
   );
-};
-|
+};|
 
 describe React::Rails::HotLoader::AssetChangeSet do
   it 'notes files that changed' do

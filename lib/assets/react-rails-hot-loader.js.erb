@@ -65,7 +65,7 @@ var ReactRailsHotLoader = {
   },
 
   _handleBankrupt: function(response) {
-    this.log("declaring bankruptcy! " + response.changed_file_names.length + " files changed.")
+    this.log("declaring bankruptcy! " + response.changed_files_count + " files changed.")
     this.stop()
     this.log("stopped")
   },

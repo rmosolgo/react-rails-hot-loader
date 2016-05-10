@@ -6,7 +6,7 @@ module React
       class Server
         attr_reader :host, :port, :change_set_class
 
-        def initialize(host:  "0.0.0.0", port: React::Rails::HotLoader.port, change_set_class: React::Rails::HotLoader::AssetChangeSet)
+        def initialize(host: "0.0.0.0", port:, change_set_class: React::Rails::HotLoader::AssetChangeSet)
           @host = host
           @port = port
           @change_set_class = change_set_class
@@ -48,7 +48,7 @@ module React
 
             bankruptcy_response = {
               bankrupt: true,
-              changed_files: changed_files_count,
+              changed_files_count: changed_files_count,
             }
 
             ws.send(bankruptcy_response.to_json)

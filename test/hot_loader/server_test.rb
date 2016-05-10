@@ -40,7 +40,7 @@ describe React::Rails::HotLoader::Server do
 
       assert_equal 1, @client.received.length
       ws_response = JSON.parse(@client.received.last)
-      assert_equal({"bankrupt" => true, "changed_files" => 3}, ws_response)
+      assert_equal({"bankrupt" => true, "changed_files_count" => 3}, ws_response)
     end
   end
 end
