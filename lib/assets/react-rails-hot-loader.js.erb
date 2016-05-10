@@ -1,6 +1,6 @@
 var ReactRailsHotLoader = {
   since: null,
-  port: 8082,
+  port: <%= React::Rails::HotLoader.port %>,
   host: window.location.hostname,
   shouldLog: true,
 
@@ -17,17 +17,11 @@ var ReactRailsHotLoader = {
 
     this._socket.onmessage = function(message) {
       var changes = JSON.parse(message.data)
-      _this.log("updating: " + changes.changed_file_names.join(", ") )
-      changes.changed_asset_contents.forEach(function(jsCode) {
-        try {
-          eval.call(window, jsCode)
-        } catch (err) {
-          _this.log(err)
-        }
-      })
-      ReactRailsUJS.mountComponents()
-      _this._resetSince()
-      _this.log("update finished")
+      if (changes.bankrupt) {
+        _this._handleBankrupt(changes)
+      } else {
+        _this._hotLoad(changes)
+      }
     }
 
     this._interval = setInterval(function() {
@@ -53,7 +47,28 @@ var ReactRailsHotLoader = {
     if (this.shouldLog) {
       console.log("[HotLoader] " + msg)
     }
-  }
+  },
+
+  _hotLoad: function(changes) {
+    this.log("updating: " + changes.changed_file_names.join(", ") )
+
+    changes.changed_asset_contents.forEach(function(jsCode) {
+      try {
+        eval.call(window, jsCode)
+      } catch (err) {
+        _this.log(err)
+      }
+    })
+    ReactRailsUJS.mountComponents()
+    this._resetSince()
+    this.log("update finished")
+  },
+
+  _handleBankrupt: function(response) {
+    this.log("declaring bankruptcy! " + response.changed_files_count + " files changed.")
+    this.stop()
+    this.log("stopped")
+  },
 }
 
 ReactRailsHotLoader.start()

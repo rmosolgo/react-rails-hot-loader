@@ -27,6 +27,10 @@ module React
         msg = "#{err.class.name}: #{err}\n #{err.backtrace.join("\n")}"
         log(msg)
       end
+
+      def self.port
+        self.server && self.server.port
+      end
     end
   end
 end
