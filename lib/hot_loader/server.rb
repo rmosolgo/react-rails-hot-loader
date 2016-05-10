@@ -16,7 +16,11 @@ module React
         def restart
           start
         rescue StandardError => err
-          React::Rails::HotLoader.error(err)
+          if err.message =~ /no acceptor/
+            React::Rails::HotLoader.log("WS server is already running (#{ws_url})")
+          else
+            React::Rails::HotLoader.error(err)
+          end
         end
 
         private
@@ -38,7 +42,17 @@ module React
           # React::Rails::HotLoader.log("received message: #{msg}")
           since_time =  Time.at(msg.to_i)
           changes = change_set_class.new(since: since_time)
-          if changes.any?
+          if changes.bankrupt?
+            changed_files_count = changes.changed_file_names.length
+            React::Rails::HotLoader.log("declared bankruptcy! (#{changed_files_count} files changed)")
+
+            bankruptcy_response = {
+              bankrupt: true,
+              changed_files: changed_files_count,
+            }
+
+            ws.send(bankruptcy_response.to_json)
+          elsif changes.any?
             React::Rails::HotLoader.log("sent changes: #{changes.changed_file_names}")
             ws.send(changes.to_json)
           end
@@ -57,12 +71,7 @@ module React
           end
 
           React::Rails::HotLoader.log("started WS server (#{ws_url})")
-        rescue StandardError => err
-          if err.message =~ /no acceptor/
-            React::Rails::HotLoader.log("WS server is already running (#{ws_url})")
-          else
-            React::Rails::HotLoader.error(err)
-          end
+
         end
 
         def already_has_event_machine_server?

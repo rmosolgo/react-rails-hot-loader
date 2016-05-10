@@ -7,7 +7,7 @@ module React
         # Search for changes with this glob
         self.asset_glob = "/**/*.{js,coffee}*"
         # If this many files change at once, give up hope! (Probably checked out a new branch)
-        self.bankruptcy_count = 10
+        self.bankruptcy_count = 5
 
         # initialize with a path and time
         # to find files which changed since that time
@@ -16,11 +16,11 @@ module React
           @path = path.to_s
           asset_glob = File.join(path, AssetChangeSet.asset_glob)
           @changed_files = Dir.glob(asset_glob).select { |f| File.mtime(f) >= since }
-          @changed_file_names = changed_files.map { |f| f.split("/").last }
+          @changed_file_names = changed_files.map { |f| File.basename(f) }
         end
 
         def bankrupt?
-          changed_files.length > self.class.bankruptcy_count
+          changed_files.length >= self.class.bankruptcy_count
         end
 
         def any?

@@ -53,8 +53,4 @@ describe React::Rails::HotLoader::AssetChangeSet do
       end
     end
   end
-
-  def touch_asset(asset_name)
-    FileUtils.touch(Rails.root.join("app/assets/javascripts/#{asset_name}"))
-  end
 end
