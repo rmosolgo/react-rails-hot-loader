@@ -20,6 +20,20 @@ describe React::Rails::HotLoader::Server do
     assert_equal [expected_content], changed_contents
   end
 
+  it 'dont process more than once msg with the same timestamp' do
+    timestamp = Time.now.to_i.to_s
+
+    touch_asset("test_asset_1.js.jsx")
+    @client.send(timestamp)
+    until @client.received.length > 0; end
+    assert_equal 1, @client.received.length
+
+    @client.send(timestamp)
+    until @client.received.length > 0; end
+    sleep 1
+    assert_equal 1, @client.received.length
+  end
+
   describe "when too many files changed" do
     before do
       React::Rails::HotLoader::AssetChangeSet.bankruptcy_count = 2
