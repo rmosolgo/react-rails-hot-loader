@@ -10,6 +10,7 @@ module React
           @host = host
           @port = port
           @change_set_class = change_set_class
+          @processed_msg = Hash.new
         end
 
         # Restarts the server _if_ it has stopped
@@ -37,9 +38,10 @@ module React
           end
         end
 
-        # Check for any changes since `msg`, respond if there are any changes
+        # Check for any changes since `msg`, respond if there are any changes, skip if msg was already processed (queue issue)
         def handle_message(ws, msg)
           # React::Rails::HotLoader.log("received message: #{msg}")
+          return true if @processed_msg[ws.signature] == msg
           since_time =  Time.at(msg.to_i)
           changes = change_set_class.new(since: since_time)
           if changes.bankrupt?
@@ -55,6 +57,7 @@ module React
           elsif changes.any?
             React::Rails::HotLoader.log("sent changes: #{changes.changed_file_names}")
             ws.send(changes.to_json)
+            @processed_msg[ws.signature] = msg
           end
         rescue StandardError => err
           React::Rails::HotLoader.error(err)
