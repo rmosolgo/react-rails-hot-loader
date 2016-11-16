@@ -29,11 +29,23 @@ describe React::Rails::HotLoader::AssetChangeSet do
     since = Time.now
     change_set = React::Rails::HotLoader::AssetChangeSet.new(since: since)
     assert !change_set.any?, "At first, no files changed"
+
     sleep 1
+
     touch_asset("test_styles_1.css.scss")
     change_set = React::Rails::HotLoader::AssetChangeSet.new(since: since)
     assert change_set.any?, "After a touch, one file is changed"
+    assert_equal ["test_styles_1.css.scss"], change_set.changed_file_names, "It uses the right file extension"
     assert_equal [TEST_STYLES_1], change_set.changed_asset_contents, "It prepares the asset for the browser"
+
+    since = Time.now
+    sleep 1
+
+    touch_asset("test_styles_2.sass")
+    change_set = React::Rails::HotLoader::AssetChangeSet.new(since: since)
+    assert change_set.any?, "After a touch, one file is changed"
+    assert_equal [TEST_STYLES_1], change_set.changed_asset_contents, "It prepares the asset for the browser"
+    assert_equal ["test_styles_2.sass"], change_set.changed_file_names, "It uses the right file extension"
   end
 
   describe "#bankrupt?" do

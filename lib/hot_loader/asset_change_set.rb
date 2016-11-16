@@ -5,7 +5,7 @@ module React
         attr_reader :since, :path, :changed_files, :changed_file_names
         class_attribute :asset_glob, :bankruptcy_count
         # Search for changes with this glob
-        self.asset_glob = "/**/*.{css,js,coffee}*"
+        self.asset_glob = "/**/*.{css,sass,scss,js,coffee}*"
         # If this many files change at once, give up hope! (Probably checked out a new branch)
         self.bankruptcy_count = 5
 
@@ -15,7 +15,7 @@ module React
           @since = since
           @path = path.to_s
           asset_glob = File.join(path, AssetChangeSet.asset_glob)
-          @changed_files = Dir.glob(asset_glob).select { |f| File.mtime(f) >= since }
+          @changed_files = Dir.glob(asset_glob).select { |f| File.mtime(f) >= since }.uniq
           @changed_file_names = changed_files.map { |f| File.basename(f) }
         end
 
@@ -50,8 +50,9 @@ module React
           asset_path
             .sub(@path, "")                     # remove the basepath
             .sub(/(javascripts|stylesheets)\//, '') # remove the asset directory
-            .sub(/^\//, '')                     # remove any leading /
-            .sub(/(\.js|\.css).*/, '\1') # replace any file extension with `.js` or `.css`
+            .sub(/^\//, '')                         # remove any leading /
+            .sub(/\.js.*/, '.js')                   # uniform .js for js
+            .sub(/\.[sac]{1,2}ss.*/, '.css') # uniform .css for styles
         end
       end
     end

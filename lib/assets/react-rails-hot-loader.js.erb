@@ -52,11 +52,21 @@ var ReactRailsHotLoader = {
   _hotLoad: function(changes) {
     this.log("updating: " + changes.changed_file_names.join(", ") )
 
-    changes.changed_asset_contents.forEach(function(jsCode) {
-      try {
-        eval.call(window, jsCode)
-      } catch (err) {
-        _this.log(err)
+    changes.changed_file_names.forEach(function(fileName, i) {
+      var changedAssetContent = changes.changed_asset_contents[i]
+
+      if (fileName.indexOf(".js") > -1) {
+        // Reload JS
+        try {
+          eval.call(window, changedAssetContent)
+        } catch (err) {
+          _this.log(err)
+        }
+      } else {
+        // Reload CSS
+        var styleTag = document.createElement("style")
+        styleTag.textContent = changedAssetContent
+        document.head.appendChild(styleTag)
       }
     })
     ReactRailsUJS.mountComponents()

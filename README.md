@@ -45,7 +45,7 @@ If you notice that your assets are not being recompiled and hot loaded, it could
 
 ```ruby
 # config/initializers/react_rails_hot_loader.rb
-React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{css,js,rb}*" # I <3 Opal
+React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{css,sass,scss,js,rb}*" # I <3 Opal
 ```
 
 You can choose a port to start it on (default is `8082`):
