@@ -45,7 +45,7 @@ If you notice that your assets are not being recompiled and hot loaded, it could
 
 ```ruby
 # config/initializers/react_rails_hot_loader.rb
-React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{js,rb}*" # I <3 Opal
+React::Rails::HotLoader::AssetChangeSet.asset_glob = "**/*.{css,js,rb}*" # I <3 Opal
 ```
 
 You can choose a port to start it on (default is `8082`):
@@ -60,10 +60,9 @@ React::Rails::HotLoader.port = 8088
 `react-rails-hot-loader` ...
 
 - __does__ set up a WebSocket server & client
-- __does__ reload JS assets when they change (from `/app/assets/javascripts/*.{js,coffee}*`)
+- __does__ reload JS assets when they change (from `/app/assets/javascripts/*.{css,js,coffee}*`)
 - __does__ remount components (via `ReactRailsUJS`) after reloading assets
 - __doesn't__ reload Rails view files (`html`, `erb`, `slim`, etc)
-- __doesn't__ reload CSS (although that could be fixed)
 
 ## TODO
 

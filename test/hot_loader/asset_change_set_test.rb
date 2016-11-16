@@ -9,8 +9,12 @@ TEST_ASSET_1 = %|var testAsset1 = function () {
 };
 |
 
+TEST_STYLES_1 = %|header h1 {
+  color: red; }
+|
+
 describe React::Rails::HotLoader::AssetChangeSet do
-  it 'notes files that changed' do
+  it 'notes javascripts that changed' do
     since = Time.now
     change_set = React::Rails::HotLoader::AssetChangeSet.new(since: since)
     assert !change_set.any?, "At first, no files changed"
@@ -19,6 +23,17 @@ describe React::Rails::HotLoader::AssetChangeSet do
     change_set = React::Rails::HotLoader::AssetChangeSet.new(since: since)
     assert change_set.any?, "After a touch, one file is changed"
     assert_equal [TEST_ASSET_1], change_set.changed_asset_contents, "It prepares the asset for the browser"
+  end
+
+  it 'notes stylesheets that changed' do
+    since = Time.now
+    change_set = React::Rails::HotLoader::AssetChangeSet.new(since: since)
+    assert !change_set.any?, "At first, no files changed"
+    sleep 1
+    touch_asset("test_styles_1.css.scss")
+    change_set = React::Rails::HotLoader::AssetChangeSet.new(since: since)
+    assert change_set.any?, "After a touch, one file is changed"
+    assert_equal [TEST_STYLES_1], change_set.changed_asset_contents, "It prepares the asset for the browser"
   end
 
   describe "#bankrupt?" do
