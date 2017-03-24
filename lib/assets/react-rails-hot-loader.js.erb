@@ -51,6 +51,7 @@ var ReactRailsHotLoader = {
 
   _hotLoad: function(changes) {
     this.log("updating: " + changes.changed_file_names.join(", ") )
+    var _self = this
 
     changes.changed_file_names.forEach(function(fileName, i) {
       var changedAssetContent = changes.changed_asset_contents[i]
@@ -60,7 +61,7 @@ var ReactRailsHotLoader = {
         try {
           eval.call(window, changedAssetContent)
         } catch (err) {
-          _this.log(err)
+          _self.log(err)
         }
       } else {
         // Reload CSS
